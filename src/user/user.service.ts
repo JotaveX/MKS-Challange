@@ -11,9 +11,9 @@ export class UserService{
     constructor(private prismaService: PrismaService){}
 
     async create(user: createUserDto) {
-        if(this.verificaEmail){ 
+        if(await this.verificaEmail(user.email)){
             throw new HttpException('Email já cadastrado', 400);
-        } 
+        }
         let data = user;
         data.password = await bcrypt.hash(data.password, 10);
         try {
@@ -65,8 +65,8 @@ export class UserService{
         }
     }
 
-    private verificaEmail(email: string) {
-        return this.prismaService.user.findUnique({
+    private async verificaEmail(email: string) {
+        return await this.prismaService.user.findUnique({
             where: {email}
         });
     }
