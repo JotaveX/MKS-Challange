@@ -31,6 +31,7 @@ export class MovieService {
 
     findAll() {
         try {
+            console.log("entrou")
             return this.prismaService.movie.findMany();
         } catch (error) {
             throw new HttpException("Erro ao buscar os filmes.", 404);
