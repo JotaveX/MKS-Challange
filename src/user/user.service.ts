@@ -25,40 +25,10 @@ export class UserService{
         }
     }
 
-    update(user: updateUserDto, id: number) {
-       let data = user;
-         try {
-              return this.prismaService.user.update({
-                where: {id},
-                data
-              });
-         } catch (error) {
-              return error;
-         }
-    }
-
-    findAll() {
-        try {
-            return this.prismaService.user.findMany();
-        } catch (error) {
-            return error;
-        }
-    }
-
     findOne(id: number) {
         try {
             return this.prismaService.user.findUnique({
                 where: {id: id},
-            });
-        } catch (error) {
-            return error;
-        }
-    }
-    
-    remove(id: number) {
-        try {
-            return this.prismaService.user.delete({
-                where: {id}
             });
         } catch (error) {
             return error;
