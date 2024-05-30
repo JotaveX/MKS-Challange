@@ -19,7 +19,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
     ttl: 300,
-    db: process.env.REDIS_DB,
+    auth_pass: process.env.REDIS_PASSWORD
   })
   ],
   controllers: [AppController],
