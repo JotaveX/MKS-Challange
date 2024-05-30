@@ -8,12 +8,20 @@ import { ConfigModule } from '@nestjs/config';
 import { RedisOptions } from 'src/config/app-options.constants';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import * as redisStore from 'cache-manager-redis-store';
+
 
 @Module({
   imports: [AuthModule, UserModule, MovieModule, ConfigModule.forRoot({
     isGlobal: true,
   }),
-  CacheModule.registerAsync(RedisOptions)
+  // CacheModule.registerAsync(RedisOptions)
+  CacheModule.register({
+    isGlobal: true,
+    store: redisStore,
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT),
+  })
   ],
   controllers: [AppController],
   providers: [AppService, {
