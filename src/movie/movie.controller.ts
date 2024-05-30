@@ -9,8 +9,6 @@ import { ApiAcceptedResponse, ApiBadRequestResponse, ApiParam, ApiUnauthorizedRe
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @UseGuards(AuthGuard)
 @Controller("movie")
-@CacheTTL(60)
-@CacheKey("movie")
 export class MovieController {
 
     constructor(private readonly movieService: MovieService){}
