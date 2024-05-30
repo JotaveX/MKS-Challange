@@ -45,8 +45,6 @@ export class MovieService {
          }
     }
 
-    @CacheKey('movies')
-    @CacheTTL(60) // Cache por 60 segundos
     findAll() {
         try {
             const movieCached = this.cacheManager.get('movies');
