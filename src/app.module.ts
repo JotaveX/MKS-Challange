@@ -13,14 +13,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   imports: [AuthModule, UserModule, MovieModule, ConfigModule.forRoot({
     isGlobal: true,
   }),
-  // CacheModule.registerAsync(RedisOptions)
-  CacheModule.register({
-    store: require('cache-manager-redis-store'),
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    ttl: 300,
-    auth_pass: process.env.REDIS_PASSWORD
-  })
+  CacheModule.registerAsync(RedisOptions)
   ],
   controllers: [AppController],
   providers: [AppService, {
