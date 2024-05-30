@@ -12,12 +12,6 @@ export class UserController {
 
     constructor(private readonly userService: UserService){}
 
-    @ApiAcceptedResponse({ description: 'The user has been successfully found.' })
-    @Get('')
-    findAll() {
-        return this.userService.findAll();
-    }
-
     @ApiAcceptedResponse({ description: 'The user has been successfully'})
     @ApiParam({ name: 'id', description: 'The user id' })
     @Get('/:id')
@@ -30,21 +24,5 @@ export class UserController {
     @Post('')
     create(@Body() body: createUserDto) {
         return this.userService.create(body);
-    }
-
-    @ApiAcceptedResponse({ description: 'The user has been successfully updated.' })
-    @ApiBadRequestResponse({ description: 'The user does not exist.' })
-    @ApiParam({ name: 'id', description: 'The user id' })
-    @Put('/:id')
-    async update(@Body() body: updateUserDto, @Param('id', ParseIntPipe) id: number) { 
-      return this.userService.update(body, id);
-    }
-
-    @ApiAcceptedResponse({ description: 'The user has been successfully removed.' })
-    @ApiBadRequestResponse({ description: 'The user does not exist.' })
-    @ApiParam({ name: 'id', description: 'The user id' })
-    @Delete('/:id')
-    remove(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.remove(id); 
     }
 }
