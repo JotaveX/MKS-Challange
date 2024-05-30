@@ -2,6 +2,7 @@ import { HttpException, Inject, Injectable, Logger, OnModuleInit } from "@nestjs
 import { createMovieDto } from "./dto/create-movie.dto";
 import { updateMovieDto } from "./dto/update-movie.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
 @Injectable()
 export class MovieService {
@@ -20,9 +21,14 @@ export class MovieService {
     async update(movie: updateMovieDto, id: number) {
        let data = movie;
          try {
-            if (await !this.verfyMovie(id)) {
+            let movie = await this.prismaService.movie.findUnique({
+                where: {id}
+            });
+
+            if (!movie) {
                 throw new HttpException("Filme não encontrado.", 404);
             }
+            
               return this.prismaService.movie.update({
                 where: {id},
                 data
@@ -32,6 +38,8 @@ export class MovieService {
          }
     }
 
+    @CacheKey('movies')
+    @CacheTTL(60) // Cache por 60 segundos
     findAll() {
         try {
             console.log("entrou")
@@ -53,18 +61,19 @@ export class MovieService {
     
     async remove(id: number) {
         try {
-            if (await !this.verfyMovie(id)) {
+            let movie = await this.prismaService.movie.findUnique({
+                where: {id}
+            });
+
+            if (!movie) {
                 throw new HttpException("Filme não encontrado.", 404);
             }
+
             return this.prismaService.movie.delete({
                 where: {id}
             });
         } catch (error) {
             throw new HttpException("Erro ao deletar o filme.", 404);
         }
-    }
-
-    private async verfyMovie(id: number) {
-        return await this.findOne(id);
     }
 }
