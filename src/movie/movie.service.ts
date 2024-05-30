@@ -17,9 +17,12 @@ export class MovieService {
             throw new HttpException("Erro ao criar o filme.", 404);
         }
     }
-    update(movie: updateMovieDto, id: number) {
+    async update(movie: updateMovieDto, id: number) {
        let data = movie;
          try {
+            if (await !this.verfyMovie(id)) {
+                throw new HttpException("Filme não encontrado.", 404);
+            }
               return this.prismaService.movie.update({
                 where: {id},
                 data
@@ -50,11 +53,18 @@ export class MovieService {
     
     async remove(id: number) {
         try {
+            if (await !this.verfyMovie(id)) {
+                throw new HttpException("Filme não encontrado.", 404);
+            }
             return this.prismaService.movie.delete({
                 where: {id}
             });
         } catch (error) {
             throw new HttpException("Erro ao deletar o filme.", 404);
         }
+    }
+
+    private async verfyMovie(id: number) {
+        return await this.findOne(id);
     }
 }
