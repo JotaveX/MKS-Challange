@@ -7,6 +7,7 @@ import { CacheKey, CacheTTL } from "@nestjs/cache-manager";
 import { ApiAcceptedResponse, ApiBadRequestResponse, ApiParam, ApiUnauthorizedResponse } from "@nestjs/swagger";
 
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+@Controller('movie')
 @UseGuards(AuthGuard)
 @Controller("movie")
 export class MovieController {
