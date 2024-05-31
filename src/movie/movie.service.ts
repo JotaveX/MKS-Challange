@@ -2,13 +2,15 @@ import { HttpException, Inject, Injectable, Logger, OnModuleInit } from "@nestjs
 import { createMovieDto } from "./dto/create-movie.dto";
 import { updateMovieDto } from "./dto/update-movie.dto";
 import { PrismaService } from "src/prisma/prisma.service";
-import { Cache, CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { CACHE_MANAGER, CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { RedisService } from "src/config/redis";
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class MovieService {
 
     constructor(private prismaService: PrismaService,
-                @Inject('CACHE_MANAGER') private cacheManager: Cache
+            @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
     async create(movie: createMovieDto) {
@@ -42,8 +44,6 @@ export class MovieService {
          }
     }
 
-    @CacheKey('movies')
-    @CacheTTL(60) // Cache por 60 segundos
     findAll() {
         try {
             console.log("entrou")

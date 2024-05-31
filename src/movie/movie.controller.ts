@@ -8,6 +8,7 @@ import { ApiAcceptedResponse, ApiBadRequestResponse, ApiParam, ApiUnauthorizedRe
 
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @UseGuards(AuthGuard)
+@CacheKey('movies')
 @Controller("movie")
 export class MovieController {
 
