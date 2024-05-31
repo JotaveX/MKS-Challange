@@ -57,7 +57,7 @@ export class MovieService {
 
     async findOne(id: number) {
         try {
-            if (await this.cacheManager.get(`movie:${id}`)) {
+            if (await this.cacheManager.get(`movie:${id.toString()}`)) {
                 return await this.cacheManager.get(`movie:${id}`);
             }
             await this.cacheManager.set(`movie:${id}`, this.prismaService.movie.findUnique({where: id}));
