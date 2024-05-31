@@ -39,7 +39,7 @@ export class MovieService {
                 data
               });
               await this.cacheManager.del('movies');
-              await this.cacheManager.set(`movie:${movieUpdated.id}`, movieUpdated);
+              await this.cacheManager.set(`movie:${id}`, movieUpdated);
          } catch (error) {
               throw new HttpException("Erro ao atualizar o filme.", 404);
          }
@@ -57,6 +57,9 @@ export class MovieService {
 
     async findOne(id: number) {
         try {
+            if (await this.cacheManager.get(`movie:${id}`)) {
+                return await this.cacheManager.get(`movie:${id}`);
+            }
             await this.cacheManager.set(`movie:${id}`, this.prismaService.movie.findUnique({where: id}));
             return this.prismaService.movie.findUnique({
                 where: {id: id},
@@ -68,7 +71,6 @@ export class MovieService {
     
     async remove(id: number) {
         try {
-            
             let movie = await this.prismaService.movie.findUnique({
                 where: {id}
             });
